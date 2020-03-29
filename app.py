@@ -14,6 +14,10 @@ def hello_world():
     return render_template("index.html")
 
 
+protocol = 'http'
+domain = 'localhost'
+
+
 @app.route('/api/create_short_url', methods=['POST'])
 def random_number():
     """
@@ -23,5 +27,10 @@ def random_number():
     """
     data = request.get_json()
     long_url = data['longurl']
+    create_short = CreateShortURL(protocol, domain)
+    url = create_short.get_url()
+
+
+
 
     return jsonify(data)
