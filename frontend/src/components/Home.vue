@@ -1,45 +1,42 @@
 <template>
   <div>
     <h3>Сделаем короткой вашу url ссылку</h3>
-    <form @submit.prevent="submit">
+    <form @submit="formSubmit">
       <label for="url">Ваш url</label>
-      <input id="url">
+      <input id="url" type="text" class="form-control" v-model="longurl">
       <button type="submit">Укоротить</button>
     </form>
-    <button @click="getRandom">New random number</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+
 export default {
-  data () {
+  mounted() {
+    console.log('Component mounted.')
+  },
+  data() {
     return {
-      randomNumber: 0
-    }
+      longurl: '',
+      description: '',
+      output: ''
+    };
   },
   methods: {
-    getRandomInt (min, max) {
-      min = Math.ceil(min)
-      max = Math.floor(max)
-      return Math.floor(Math.random() * (max - min + 1)) + min
-    },
-    getRandom () {
-      this.randomNumber = this.getRandomFromBackend()
-    },
-    getRandomFromBackend () {
-      const path = `http://localhost:5000/api/random`
-      axios.get(path)
-        .then(response => {
-          this.randomNumber = response.data.randomNumber
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    formSubmit(e) {
+      e.preventDefault();
+      let currentObj = this;
+      axios.post('http://localhost:5000/api/create_short_url', {
+        longurl: this.longurl,
+      })
+      .then(function (response) {
+        currentObj.output = response.data;
+      })
+      .catch(function (error) {
+        currentObj.output = error;
+      });
     }
-  },
-  created () {
-    this.getRandom()
   }
 }
 </script>

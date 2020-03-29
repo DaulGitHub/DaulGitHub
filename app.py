@@ -1,6 +1,6 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from random import *
+from url import CreateShortURL
 
 
 app = Flask(__name__,
@@ -14,9 +14,14 @@ def hello_world():
     return render_template("index.html")
 
 
-@app.route('/api/random')
+@app.route('/api/create_short_url', methods=['POST'])
 def random_number():
-    response = {
-        'randomNumber': randint(1, 100)
-    }
-    return jsonify(response)
+    """
+    Create short url.
+
+    :return hort url
+    """
+    data = request.get_json()
+    long_url = data['longurl']
+
+    return jsonify(data)
