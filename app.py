@@ -23,11 +23,6 @@ def before_request():
     g.storage = get_db()
 
 
-@app.teardown_request
-def teardown_request(exception):
-    g.storage.close()
-
-
 @app.route('/')
 def main_page():
     return render_template("index.html")
@@ -38,7 +33,7 @@ def random_number():
     """
     Create short url.
 
-    :return hort url
+    :return short url
     """
     data = request.get_json()
     long_url = data['longurl']
@@ -47,4 +42,4 @@ def random_number():
 
     g.storage.save_url(long_url, short_url)
 
-    return jsonify({'short': short_url, 'long': long_url})
+    return jsonify({'short': short_url})

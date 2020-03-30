@@ -19,5 +19,3 @@ class Storage:
 
         cur.close()
 
-    def close(self):
-        pass

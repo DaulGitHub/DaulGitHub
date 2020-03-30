@@ -1,11 +1,16 @@
 <template>
-  <div>
+  <div id="app">
     <h3>Сделаем короткой вашу url ссылку</h3>
     <form @submit="formSubmit">
-      <label for="url">Ваш url</label>
+      <label for="url">Ваш url: </label>
       <input id="url" type="text" class="form-control" v-model="longurl">
       <button type="submit">Укоротить</button>
     </form>
+    <div>
+     <div class="short-urls">
+      <p> {{shorturls.short}} </p>
+     </div>
+    </div>
   </div>
 </template>
 
@@ -19,8 +24,7 @@ export default {
   data() {
     return {
       longurl: '',
-      description: '',
-      output: ''
+      shorturls: '123'
     };
   },
   methods: {
@@ -31,7 +35,7 @@ export default {
         longurl: this.longurl,
       })
       .then(function (response) {
-        currentObj.output = response.data;
+        currentObj.shorturls = response.data;
       })
       .catch(function (error) {
         currentObj.output = error;
