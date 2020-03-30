@@ -1,6 +1,6 @@
-#### create database
+#### Create Click-Worthy Links
 application use postgres database, 
-for create urls database execute<br>
+for create 'urls' database execute<br>
 <code>\=# create database urls; </code>
 <br>
 for create tables please execute<br>
