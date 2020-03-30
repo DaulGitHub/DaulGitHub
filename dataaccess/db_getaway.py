@@ -7,10 +7,14 @@ class Storage:
 
         self.conn = ps.connect(f"dbname='{dbname}' user='{user}' host='{host}' password='{password}'")
 
-    def save_url(self, long, short):
+    def save_url(self, long: str, short: str):
         cur = self.conn.cursor()
-        cur.execute(f"INSERT INTO long VALUES {long};")
-        cur.execute(f"""INSERT INTO short (url, long_id) VALUES ('{short}', (SELECT id FROM long WHERE long='{long}'))""")
+        # insert only unique value long url
+        cur.execute(f"""INSERT INTO long (url) 
+                        SELECT ('{long}') 
+                        where not exists (select * from long where url='{long}');""")
+        self.conn.commit()
+        cur.execute(f"INSERT INTO short (url, long_id) VALUES ('{short}', (SELECT id FROM long WHERE url='{long}'))")
         self.conn.commit()
 
         cur.close()
