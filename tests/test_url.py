@@ -6,21 +6,18 @@ import re
 class TestCreateShortURL(TestCase):
 
     def setUp(self) -> None:
-        self.url = CreateShortURL('http', 'localhost')
-
-    def test_get_url_check_len(self):
-        short = self.url.get_url()
-
-        url_len = 23
-        self.assertEqual(len(short), url_len)
+        self.protocol = 'http'
+        self.host = 'localhost'
+        self.port = '5000'
+        self.url = CreateShortURL(self.protocol, self.host, self.port)
 
     def test_get_url_contain_protocol_domain(self):
-        short = self.url.get_url()
+        short = self.url.get_url("qweRt1")
 
-        self.assertTrue("http://localhost" in short)
+        self.assertEqual("http://localhost:5000/qweRt1", short)
 
     def test_check_get_url_check_prefix(self):
-        short = self.url.get_url()
+        short = self.url.get_url("qweRt1")
 
         self.assertEqual(short[-7], '/')
         prefix = short[-6:]

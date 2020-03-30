@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       longurl: '',
-      shorturls: '123'
+      shorturls: ''
     };
   },
   methods: {

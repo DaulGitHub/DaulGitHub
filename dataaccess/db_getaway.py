@@ -19,3 +19,11 @@ class Storage:
 
         cur.close()
 
+    def get_url(self, prefix):
+        cur = self.conn.cursor()
+        command = f"""SELECT l.url FROM long l JOIN short s ON l.id=s.long_id WHERE s.url = '{prefix}'"""
+        cur.execute(command)
+        long_url = cur.fetchone()[0]
+
+        return long_url
+

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, g
+from flask import Flask, render_template, jsonify, request, g, redirect
 from flask_cors import CORS
 from url import CreateShortURL
 from dataaccess.db_getaway import Storage
@@ -37,9 +37,18 @@ def random_number():
     """
     data = request.get_json()
     long_url = data['longurl']
-    create_short = CreateShortURL(app.config['PROTOCOL'], app.config['DOMAIN'])
-    short_url = create_short.get_url()
+    create_short = CreateShortURL(app.config['PROTOCOL'], app.config['DOMAIN'], app.config['PORT'])
+    url_prefix = create_short.get_prefix()
 
-    g.storage.save_url(long_url, short_url)
+    g.storage.save_url(long_url, url_prefix)
 
+    short_url = create_short.get_url(url_prefix)
     return jsonify({'short': short_url})
+
+
+@app.route('/<prefix>', methods=['GET'])
+def redirect_page(prefix):
+
+    long_url = g.storage.get_url(prefix)
+
+    return redirect(long_url)
